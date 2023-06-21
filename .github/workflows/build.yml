@@ -2,22 +2,25 @@ name: Build Apptainer in Ubuntu-22.04
 
 on:
   schedule:
-    - cron:  '0 2 ? * SUN'
+    - cron: "0 0 * * 0"
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
         
       - name: Docker install
-        run: wget https://raw.githubusercontent.com/sigmaresearch100/docker-ubuntu-22.04/main/src/build.sh | sudo bash
+        run: |
+          wget https://raw.githubusercontent.com/sigmaresearch100/docker-ubuntu-22.04/main/tools/build.sh
+          sudo bash build.sh
             
       - name: Apptainer install
-        run: sudo bash ${PWD}/src/build.sh
+        run: sudo bash ${PWD}/tools/build.sh
